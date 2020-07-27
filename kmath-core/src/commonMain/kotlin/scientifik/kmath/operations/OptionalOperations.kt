@@ -1,7 +1,7 @@
 package scientifik.kmath.operations
 
 /**
- * A container for trigonometric operations for specific type. Trigonometric operations are limited to semifields.
+ * A container for trigonometric operations for specific type. They are limited to semifields.
  *
  * The operations are not exposed to class directly to avoid method bloat but instead are declared in the field.
  * It also allows to override behavior for optional operations.
@@ -118,15 +118,9 @@ fun <T : MathElement<out PowerOperations<T>>> sqrt(arg: T): T = arg pow 0.5
 fun <T : MathElement<out PowerOperations<T>>> sqr(arg: T): T = arg pow 2.0
 
 /**
- * A container for operations related to Euler's `e` number.
+ * A container for operations related to `exp` and `ln` functions.
  */
-interface ExponentialOperations<T> : FieldOperations<T>, Ring<T>, PowerOperations<T> {
-    /**
-     * Returns Euler's number `e` in this algebra.
-     */
-    val e: T
-        get() = exp(one)
-
+interface ExponentialOperations<T> : FieldOperations<T>, PowerOperations<T> {
     /**
      * Computes Euler's number `e` raised to the power of the value [arg].
      */
@@ -136,6 +130,32 @@ interface ExponentialOperations<T> : FieldOperations<T>, Ring<T>, PowerOperation
      * Computes the natural logarithm (base `e`) of the value [arg].
      */
     fun ln(arg: T): T
+
+    companion object {
+        const val EXP_OPERATION = "exp"
+        const val LN_OPERATION = "ln"
+    }
+}
+
+/**
+ * Computes Euler's number `e` raised to the power of the value [arg].
+ */
+fun <T : MathElement<out ExponentialOperations<T>>> exp(arg: T): T = arg.context.exp(arg)
+
+/**
+ * Computes the natural logarithm (base `e`) of the value [arg].
+ */
+fun <T : MathElement<out ExponentialOperations<T>>> ln(arg: T): T = arg.context.ln(arg)
+
+/**
+ * A container for operations related to `exp` and `ln` functions with field-specific operations.
+ */
+interface ExponentialOperationsField<T> : Field<T>, ExponentialOperations<T> {
+    /**
+     * Returns Euler's number `e` in this algebra.
+     */
+    val e: T
+        get() = exp(one)
 
     /**
      * Computes the hyperbolic sine of [arg].
@@ -168,8 +188,6 @@ interface ExponentialOperations<T> : FieldOperations<T>, Ring<T>, PowerOperation
     fun atanh(arg: T): T = (ln(arg + one) - ln(one - arg)) / 2
 
     companion object {
-        const val EXP_OPERATION = "exp"
-        const val LN_OPERATION = "ln"
         const val SINH_OPERATION = "sinh"
         const val COSH_OPERATION = "cosh"
         const val TANH_OPERATION = "tanh"
@@ -180,44 +198,34 @@ interface ExponentialOperations<T> : FieldOperations<T>, Ring<T>, PowerOperation
 }
 
 /**
- * Computes Euler's number `e` raised to the power of the value [arg].
- */
-fun <T : MathElement<out ExponentialOperations<T>>> exp(arg: T): T = arg.context.exp(arg)
-
-/**
- * Computes the natural logarithm (base `e`) of the value [arg].
- */
-fun <T : MathElement<out ExponentialOperations<T>>> ln(arg: T): T = arg.context.ln(arg)
-
-/**
  * Computes the hyperbolic sine of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> sinh(arg: T): T = arg.context.sinh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> sinh(arg: T): T = arg.context.sinh(arg)
 
 /**
  * Computes the hyperbolic cosine of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> cosh(arg: T): T = arg.context.cosh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> cosh(arg: T): T = arg.context.cosh(arg)
 
 /**
  * Computes the hyperbolic tangent of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> tanh(arg: T): T = arg.context.tanh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> tanh(arg: T): T = arg.context.tanh(arg)
 
 /**
  * Computes the inverse hyperbolic sine of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> asinh(arg: T): T = arg.context.asinh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> asinh(arg: T): T = arg.context.asinh(arg)
 
 /**
  * Computes the inverse hyperbolic cosine of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> acosh(arg: T): T = arg.context.acosh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> acosh(arg: T): T = arg.context.acosh(arg)
 
 /**
  * Computes the inverse hyperbolic tangent of [arg].
  */
-fun <T : MathElement<out ExponentialOperations<T>>> atanh(arg: T): T = arg.context.atanh(arg)
+fun <T : MathElement<out ExponentialOperationsField<T>>> atanh(arg: T): T = arg.context.atanh(arg)
 
 /**
  * A container for norm functional on element.

@@ -13,7 +13,6 @@ interface ExtendedFieldOperations<T> :
     ExponentialOperations<T> {
 
     override fun tan(arg: T): T = sin(arg) / cos(arg)
-    override fun tanh(arg: T): T = sinh(arg) / cosh(arg)
 
     override fun unaryOperation(operation: String, arg: T): T = when (operation) {
         TrigonometricOperations.COS_OPERATION -> cos(arg)
@@ -25,20 +24,24 @@ interface ExtendedFieldOperations<T> :
         PowerOperations.SQRT_OPERATION -> sqrt(arg)
         ExponentialOperations.EXP_OPERATION -> exp(arg)
         ExponentialOperations.LN_OPERATION -> ln(arg)
-        ExponentialOperations.COSH_OPERATION -> cos(arg)
-        ExponentialOperations.SINH_OPERATION -> sin(arg)
-        ExponentialOperations.TANH_OPERATION -> tan(arg)
-        ExponentialOperations.ACOSH_OPERATION -> acos(arg)
-        ExponentialOperations.ASINH_OPERATION -> asin(arg)
-        ExponentialOperations.ATANH_OPERATION -> atan(arg)
         else -> super<TrigonometricOperations>.unaryOperation(operation, arg)
     }
 }
 
-interface ExtendedField<T> : ExtendedFieldOperations<T>, Field<T> {
+interface ExtendedField<T> : ExtendedFieldOperations<T>, ExponentialOperationsField<T> {
+    override fun unaryOperation(operation: String, arg: T): T = when (operation) {
+        ExponentialOperationsField.SINH_OPERATION -> sinh(arg)
+        ExponentialOperationsField.COSH_OPERATION -> cosh(arg)
+        ExponentialOperationsField.TANH_OPERATION -> tanh(arg)
+        ExponentialOperationsField.ACOSH_OPERATION -> acosh(arg)
+        ExponentialOperationsField.ASINH_OPERATION -> asinh(arg)
+        ExponentialOperationsField.ATANH_OPERATION -> atanh(arg)
+        else -> super<ExtendedFieldOperations>.unaryOperation(operation, arg)
+    }
+
     override fun rightSideNumberOperation(operation: String, left: T, right: Number): T = when (operation) {
         PowerOperations.POW_OPERATION -> power(left, right)
-        else -> super<ExtendedFieldOperations>.rightSideNumberOperation(operation, left, right)
+        else -> super.rightSideNumberOperation(operation, left, right)
     }
 }
 
@@ -71,6 +74,8 @@ object RealField : ExtendedField<Double>, Norm<Double, Double> {
 
     override val e: Double
         get() = E
+
+    override inline fun number(value: Number): Double = value.toDouble()
 
     override inline fun add(a: Double, b: Double): Double = a + b
     override inline fun multiply(a: Double, k: Number): Double = a * k.toDouble()
@@ -115,6 +120,8 @@ object FloatField : ExtendedField<Float>, Norm<Float, Float> {
         get() = 1.0f
 
     override val e: Float = E.toFloat()
+
+    override inline fun number(value: Number): Float = value.toFloat()
 
     override inline fun add(a: Float, b: Float): Float = a + b
     override inline fun multiply(a: Float, k: Number): Float = a * k.toFloat()
@@ -161,6 +168,7 @@ object IntRing : Ring<Int>, Norm<Int, Int> {
     override val one: Int
         get() = 1
 
+    override inline fun number(value: Number): Int = value.toInt()
     override inline fun add(a: Int, b: Int): Int = a + b
     override inline fun multiply(a: Int, k: Number): Int = k.toInt() * a
 
@@ -184,6 +192,8 @@ object ShortRing : Ring<Short>, Norm<Short, Short> {
 
     override val one: Short
         get() = 1
+
+    override inline fun number(value: Number): Short = value.toShort()
 
     override inline fun add(a: Short, b: Short): Short = (a + b).toShort()
     override inline fun multiply(a: Short, k: Number): Short = (a * k.toShort()).toShort()
@@ -209,6 +219,8 @@ object ByteRing : Ring<Byte>, Norm<Byte, Byte> {
     override val one: Byte
         get() = 1
 
+    override inline fun number(value: Number): Byte = value.toByte()
+
     override inline fun add(a: Byte, b: Byte): Byte = (a + b).toByte()
     override inline fun multiply(a: Byte, k: Number): Byte = (a * k.toByte()).toByte()
 
@@ -232,6 +244,8 @@ object LongRing : Ring<Long>, Norm<Long, Long> {
 
     override val one: Long
         get() = 1
+
+    override inline fun number(value: Number): Long = value.toLong()
 
     override inline fun add(a: Long, b: Long): Long = a + b
     override inline fun multiply(a: Long, k: Number): Long = a * k.toLong()
