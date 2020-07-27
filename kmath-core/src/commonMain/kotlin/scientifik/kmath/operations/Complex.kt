@@ -91,8 +91,8 @@ object ComplexField : ExtendedField<Complex> {
         return i * (e1 - e2) / (e1 + e2)
     }
 
-    override fun asin(arg: Complex): Complex = -i * ln(sqrt(1 - (arg * arg)) + i * arg)
-    override fun acos(arg: Complex): Complex = PI_DIV_2 + i * ln(sqrt(1 - (arg * arg)) + i * arg)
+    override fun asin(arg: Complex): Complex = -i * ln(sqrt(one - (arg * arg)) + i * arg)
+    override fun acos(arg: Complex): Complex = PI_DIV_2 + i * ln(sqrt(one - (arg * arg)) + i * arg)
 
     override fun atan(arg: Complex): Complex {
         val iArg = i * arg

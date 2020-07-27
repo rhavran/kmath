@@ -160,12 +160,12 @@ interface ExponentialOperations<T> : FieldOperations<T>, Ring<T>, PowerOperation
     /**
      * Computes the inverse hyperbolic cosine of [arg].
      */
-    fun acosh(arg: T): T = ln(arg + sqrt((arg - 1) * (arg + 1)))
+    fun acosh(arg: T): T = ln(arg + sqrt((arg - one) * (arg + one)))
 
     /**
      * Computes the inverse hyperbolic tangent of [arg].
      */
-    fun atanh(arg: T): T = (ln(arg + 1) - ln(1 - arg)) / 2
+    fun atanh(arg: T): T = (ln(arg + one) - ln(one - arg)) / 2
 
     companion object {
         const val EXP_OPERATION = "exp"
