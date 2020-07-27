@@ -86,36 +86,6 @@ object RealBufferFieldOperations : ExtendedFieldOperations<Buffer<Double>> {
     } else
         RealBuffer(DoubleArray(arg.size) { atan(arg[it]) })
 
-    override fun sinh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { sinh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { sinh(arg[it]) })
-
-    override fun cosh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { cosh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { cosh(arg[it]) })
-
-    override fun tanh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { tanh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { tanh(arg[it]) })
-
-    override fun asinh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { asinh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { asinh(arg[it]) })
-
-    override fun acosh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { acosh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { acosh(arg[it]) })
-
-    override fun atanh(arg: Buffer<Double>): RealBuffer = if (arg is RealBuffer) {
-        val array = arg.array
-        RealBuffer(DoubleArray(arg.size) { atanh(array[it]) })
-    } else RealBuffer(DoubleArray(arg.size) { atanh(arg[it]) })
-
     override fun power(arg: Buffer<Double>, pow: Number): RealBuffer = if (arg is RealBuffer) {
         val array = arg.array
         RealBuffer(DoubleArray(arg.size) { array[it].pow(pow.toDouble()) })
