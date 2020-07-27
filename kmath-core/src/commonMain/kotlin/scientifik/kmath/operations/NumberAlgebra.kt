@@ -43,6 +43,8 @@ interface ExtendedField<T> : ExtendedFieldOperations<T>, ExponentialOperationsFi
         PowerOperations.POW_OPERATION -> power(left, right)
         else -> super.rightSideNumberOperation(operation, left, right)
     }
+
+    override fun symbol(value: String): T = if (value == "e") e else super<ExponentialOperationsField>.symbol(value)
 }
 
 /**
