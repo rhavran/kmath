@@ -1,5 +1,6 @@
 package scientifik.kmath.operations
 
+import kotlin.math.E
 import kotlin.math.abs
 import kotlin.math.pow as kpow
 
@@ -8,7 +9,6 @@ import kotlin.math.pow as kpow
  */
 interface ExtendedFieldOperations<T> :
     TrigonometricOperations<T>,
-    HyperbolicTrigonometricOperations<T>,
     PowerOperations<T>,
     ExponentialOperations<T> {
 
@@ -22,23 +22,23 @@ interface ExtendedFieldOperations<T> :
         TrigonometricOperations.ACOS_OPERATION -> acos(arg)
         TrigonometricOperations.ASIN_OPERATION -> asin(arg)
         TrigonometricOperations.ATAN_OPERATION -> atan(arg)
-        HyperbolicTrigonometricOperations.COSH_OPERATION -> cos(arg)
-        HyperbolicTrigonometricOperations.SINH_OPERATION -> sin(arg)
-        HyperbolicTrigonometricOperations.TANH_OPERATION -> tan(arg)
-        HyperbolicTrigonometricOperations.ACOSH_OPERATION -> acos(arg)
-        HyperbolicTrigonometricOperations.ASINH_OPERATION -> asin(arg)
-        HyperbolicTrigonometricOperations.ATANH_OPERATION -> atan(arg)
         PowerOperations.SQRT_OPERATION -> sqrt(arg)
         ExponentialOperations.EXP_OPERATION -> exp(arg)
         ExponentialOperations.LN_OPERATION -> ln(arg)
-        else -> super<HyperbolicTrigonometricOperations>.unaryOperation(operation, arg)
+        ExponentialOperations.COSH_OPERATION -> cos(arg)
+        ExponentialOperations.SINH_OPERATION -> sin(arg)
+        ExponentialOperations.TANH_OPERATION -> tan(arg)
+        ExponentialOperations.ACOSH_OPERATION -> acos(arg)
+        ExponentialOperations.ASINH_OPERATION -> asin(arg)
+        ExponentialOperations.ATANH_OPERATION -> atan(arg)
+        else -> super<TrigonometricOperations>.unaryOperation(operation, arg)
     }
 }
 
 interface ExtendedField<T> : ExtendedFieldOperations<T>, Field<T> {
     override fun rightSideNumberOperation(operation: String, left: T, right: Number): T = when (operation) {
         PowerOperations.POW_OPERATION -> power(left, right)
-        else -> super.rightSideNumberOperation(operation, left, right)
+        else -> super<ExtendedFieldOperations>.rightSideNumberOperation(operation, left, right)
     }
 }
 
@@ -68,6 +68,9 @@ object RealField : ExtendedField<Double>, Norm<Double, Double> {
 
     override val one: Double
         get() = 1.0
+
+    override val e: Double
+        get() = E
 
     override inline fun add(a: Double, b: Double): Double = a + b
     override inline fun multiply(a: Double, k: Number): Double = a * k.toDouble()
@@ -110,6 +113,8 @@ object FloatField : ExtendedField<Float>, Norm<Float, Float> {
 
     override val one: Float
         get() = 1.0f
+
+    override val e: Float = E.toFloat()
 
     override inline fun add(a: Float, b: Float): Float = a + b
     override inline fun multiply(a: Float, k: Number): Float = a * k.toFloat()

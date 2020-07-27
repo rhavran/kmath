@@ -35,7 +35,7 @@ val Complex.r: Double
 val Complex.theta: Double
     get() = atan(im / re)
 
-private val PI_DIV_2 = Complex(PI / 2, 0)
+private val PI_DIV_2: Complex = (PI / 2).toComplex()
 
 /**
  * A field for complex numbers.
@@ -43,6 +43,7 @@ private val PI_DIV_2 = Complex(PI / 2, 0)
 object ComplexField : ExtendedField<Complex> {
     override val zero: Complex = 0.0.toComplex()
     override val one: Complex = 1.0.toComplex()
+    override val e: Complex = E.toComplex()
 
     /**
      * The imaginary unit constant.
@@ -97,13 +98,6 @@ object ComplexField : ExtendedField<Complex> {
         val iArg = i * arg
         return i * (ln(1 - iArg) - ln(1 + iArg)) / 2
     }
-
-    override fun sinh(arg: Complex): Complex = (exp(arg) - exp(-arg)) / 2
-    override fun cosh(arg: Complex): Complex = (exp(arg) + exp(-arg)) / 2
-    override fun tanh(arg: Complex): Complex = (exp(arg) - exp(-arg)) / (exp(-arg) + exp(arg))
-    override fun asinh(arg: Complex): Complex = ln(sqrt(arg * arg + 1) + arg)
-    override fun acosh(arg: Complex): Complex = ln(arg + sqrt((arg - 1) * (arg + 1)))
-    override fun atanh(arg: Complex): Complex = (ln(arg + 1) - ln(1 - arg)) / 2
 
     override fun power(arg: Complex, pow: Number): Complex = if (arg.im == 0.0)
         arg.re.pow(pow.toDouble()).toComplex()
