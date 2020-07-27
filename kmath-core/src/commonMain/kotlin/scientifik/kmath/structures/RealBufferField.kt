@@ -156,36 +156,6 @@ class RealBufferField(val size: Int) : ExtendedField<Buffer<Double>> {
         return RealBufferFieldOperations.atan(arg)
     }
 
-    override fun sinh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.sinh(arg)
-    }
-
-    override fun cosh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.cosh(arg)
-    }
-
-    override fun tanh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.tanh(arg)
-    }
-
-    override fun asinh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.asinh(arg)
-    }
-
-    override fun acosh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.acosh(arg)
-    }
-
-    override fun atanh(arg: Buffer<Double>): RealBuffer {
-        require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
-        return RealBufferFieldOperations.atanh(arg)
-    }
-
     override fun power(arg: Buffer<Double>, pow: Number): RealBuffer {
         require(arg.size == size) { "The buffer size ${arg.size} does not match context size $size" }
         return RealBufferFieldOperations.power(arg, pow)
